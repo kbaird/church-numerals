@@ -1,9 +1,9 @@
-defmodule Church.MixProject do
+defmodule ChurchNumerals.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :church,
+      app: :church_numerals,
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,

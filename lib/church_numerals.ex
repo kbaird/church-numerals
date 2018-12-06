@@ -1,6 +1,6 @@
-defmodule Church do
+defmodule ChurchNumerals do
   @moduledoc """
-  Documentation for Church.
+  Documentation for ChurchNumerals.
   """
 
   @doc """
@@ -8,10 +8,10 @@ defmodule Church do
 
   ## Examples
 
-      iex> Church.encode(0).(:arg)
+      iex> ChurchNumerals.encode(0).(:arg)
       :arg
 
-      iex> one = Church.encode(1)
+      iex> one = ChurchNumerals.encode(1)
       iex> zero = one.()
       iex> zero.(:arg)
       :arg
@@ -23,16 +23,16 @@ defmodule Church do
   end
 
   @doc """
-  Decode numerals in accordance with https://en.wikipedia.org/wiki/Church_encoding
+  Decode numerals in accordance with https://en.wikipedia.org/wiki/ChurchNumerals_encoding
 
   ## Examples
 
-      iex> zero = Church.encode(0)
-      iex> Church.decode(zero)
+      iex> zero = ChurchNumerals.encode(0)
+      iex> ChurchNumerals.decode(zero)
       0
 
-      iex> five = Church.encode(5)
-      iex> Church.decode(five)
+      iex> five = ChurchNumerals.encode(5)
+      iex> ChurchNumerals.decode(five)
       5
   """
   def decode(fun) when is_function(fun), do: decode(fun, 0)

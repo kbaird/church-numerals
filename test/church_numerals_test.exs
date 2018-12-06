@@ -1,37 +1,37 @@
-defmodule ChurchTest do
+defmodule ChurchNumeralsTest do
   use ExUnit.Case
-  doctest Church
+  doctest ChurchNumerals
 
   test "encode 0" do
-    zero = Church.encode(0)
+    zero = ChurchNumerals.encode(0)
     assert_is_encoded_zero(zero)
   end
 
   test "encode 1" do
-    one = Church.encode(1)
+    one = ChurchNumerals.encode(1)
     zero = one.()
     assert_is_encoded_zero(zero)
   end
 
   test "encode 12" do
-    twelve = Church.encode(12)
+    twelve = ChurchNumerals.encode(12)
     zero = twelve.().().().().().().().().().().().()
     assert_is_encoded_zero(zero)
   end
 
   test "decode 0" do
-    zero = Church.encode(0)
-    assert Church.decode(zero) == 0
+    zero = ChurchNumerals.encode(0)
+    assert ChurchNumerals.decode(zero) == 0
   end
 
   test "decode 1" do
-    one = Church.encode(1)
-    assert Church.decode(one) == 1
+    one = ChurchNumerals.encode(1)
+    assert ChurchNumerals.decode(one) == 1
   end
 
   test "decode 9999" do
-    high = Church.encode(9999)
-    assert Church.decode(high) == 9999
+    high = ChurchNumerals.encode(9999)
+    assert ChurchNumerals.decode(high) == 9999
   end
 
   defp assert_is_encoded_zero(zero) do

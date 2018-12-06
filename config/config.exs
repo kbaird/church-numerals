@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure your application as:
 #
-#     config :church, key: :value
+#     config :church_numerals, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:church, :key)
+#     Application.get_env(:church_numerals, :key)
 #
 # You can also configure a 3rd-party app:
 #
