@@ -13,6 +13,12 @@ defmodule ChurchTest do
     assert_is_encoded_zero(zero)
   end
 
+  test "encode 12" do
+    twelve = Church.encode(12)
+    zero = twelve.().().().().().().().().().().().()
+    assert_is_encoded_zero(zero)
+  end
+
   defp assert_is_encoded_zero(zero) do
     assert is_function(zero)
     assert zero.(:arg) == :arg
