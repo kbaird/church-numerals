@@ -3,6 +3,10 @@ defmodule ChurchNumerals do
   Documentation for ChurchNumerals, in accordance with https://en.wikipedia.org/wiki/Church_encoding
   """
 
+  defguard is_pos_int(num) when is_integer(num) and num > 0
+  defguard is_pos_church(encoded) when is_function(encoded, 0)
+  defguard is_zero_church(encoded) when is_function(encoded, 1)
+
   @doc """
   ## Examples
 
@@ -16,7 +20,7 @@ defmodule ChurchNumerals do
   """
   def encode(0), do: fn arg -> arg end
 
-  def encode(num) when is_integer(num) and num > 0 do
+  def encode(num) when is_pos_int(num) do
     fn -> encode(num - 1) end
   end
 
@@ -33,7 +37,7 @@ defmodule ChurchNumerals do
   """
   def decode(fun) when is_function(fun), do: decode(fun, 0)
 
-  defp decode(fun, num) when is_function(fun, 1), do: num
+  defp decode(fun, num) when is_zero_church(fun), do: num
   defp decode(fun, num), do: decode(fun.(), num + 1)
 
   @doc """
@@ -50,10 +54,10 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(five)
       5
   """
-  def add(zero, fun) when is_function(zero, 1), do: fun
-  def add(fun, zero) when is_function(zero, 1), do: fun
+  def add(zero, fun) when is_zero_church(zero), do: fun
+  def add(fun, zero) when is_zero_church(zero), do: fun
 
-  def add(fun1, fun2) when is_function(fun1, 0) and is_function(fun2, 0) do
+  def add(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
     sum = decode(fun1) + decode(fun2)
     encode(sum)
   end
