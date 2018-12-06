@@ -1,6 +1,8 @@
-# Church
+# Church Numerals
 
-**TODO: Add description**
+**Church Encoding of numerals**
+
+https://en.wikipedia.org/wiki/Church_encoding
 
 ## Installation
 
