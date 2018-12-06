@@ -24,13 +24,11 @@ defmodule ChurchNumeralsTest do
   ### DECODE
 
   test "decode 0" do
-    zero = ChurchNumerals.encode(0)
-    assert ChurchNumerals.decode(zero) == 0
+    assert ChurchNumerals.decode(zero()) == 0
   end
 
   test "decode 1" do
-    one = ChurchNumerals.encode(1)
-    assert ChurchNumerals.decode(one) == 1
+    assert ChurchNumerals.decode(one()) == 1
   end
 
   test "decode 9999" do
@@ -41,57 +39,44 @@ defmodule ChurchNumeralsTest do
   ### ADD
 
   test "add zero and zero" do
-    zero = ChurchNumerals.encode(0)
-    assert ChurchNumerals.add(zero, zero) == zero
+    assert ChurchNumerals.add(zero(), zero()) == zero()
   end
 
   test "add zero and one" do
-    zero = ChurchNumerals.encode(0)
-    one = ChurchNumerals.encode(1)
-    assert ChurchNumerals.add(zero, one) == one
+    assert ChurchNumerals.add(zero(), one()) == one()
   end
 
   test "add one and zero" do
-    zero = ChurchNumerals.encode(0)
-    one = ChurchNumerals.encode(1)
-    assert ChurchNumerals.add(one, zero) == one
+    assert ChurchNumerals.add(one(), zero()) == one()
   end
 
   test "add one and one" do
-    one = ChurchNumerals.encode(1)
-    two = ChurchNumerals.add(one, one)
+    two = ChurchNumerals.add(one(), one())
     assert ChurchNumerals.decode(two) == 2
   end
 
   ### MULTIPLY
 
   test "mult(one, zero)" do
-    one = ChurchNumerals.encode(1)
-    zero = ChurchNumerals.encode(0)
-    assert ChurchNumerals.mult(one, zero) == zero
+    assert ChurchNumerals.mult(one(), zero()) == zero()
   end
 
   test "mult(zero, one)" do
-    one = ChurchNumerals.encode(1)
-    zero = ChurchNumerals.encode(0)
-    assert ChurchNumerals.mult(zero, one) == zero
+    assert ChurchNumerals.mult(zero(), one()) == zero()
   end
 
   test "mult(one, one)" do
-    one = ChurchNumerals.encode(1)
-    assert ChurchNumerals.mult(one, one) == one
+    assert ChurchNumerals.mult(one(), one()) == one()
   end
 
   test "mult(one, two)" do
-    one = ChurchNumerals.encode(1)
     two = ChurchNumerals.encode(2)
-    assert ChurchNumerals.mult(one, two) == two
+    assert ChurchNumerals.mult(one(), two) == two
   end
 
   test "mult(two, one)" do
-    one = ChurchNumerals.encode(1)
     two = ChurchNumerals.encode(2)
-    assert ChurchNumerals.mult(two, one) == two
+    assert ChurchNumerals.mult(two, one()) == two
   end
 
   test "mult(two, three)" do
@@ -104,8 +89,7 @@ defmodule ChurchNumeralsTest do
   ### SUCCESSOR
 
   test "succ(one)" do
-    one = ChurchNumerals.encode(1)
-    two = ChurchNumerals.succ(one)
+    two = one() |> ChurchNumerals.succ()
     assert ChurchNumerals.decode(two) == 2
   end
 
@@ -115,4 +99,7 @@ defmodule ChurchNumeralsTest do
     assert is_function(zero)
     assert zero.(:arg) == :arg
   end
+
+  defp zero, do: ChurchNumerals.encode(0)
+  defp one, do: ChurchNumerals.encode(1)
 end
