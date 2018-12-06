@@ -58,8 +58,8 @@ defmodule ChurchNumerals do
   def add(fun, zero) when is_zero_church(zero), do: fun
 
   def add(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
-    sum = decode(fun1) + decode(fun2)
-    encode(sum)
+    additional_turns = decode(fun2)
+    Enum.reduce(1..additional_turns, fun1, fn _, acc -> fn -> acc end end)
   end
 
   @doc """
