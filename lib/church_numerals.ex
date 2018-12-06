@@ -1,11 +1,9 @@
 defmodule ChurchNumerals do
   @moduledoc """
-  Documentation for ChurchNumerals.
+  Documentation for ChurchNumerals, in accordance with https://en.wikipedia.org/wiki/Church_encoding
   """
 
   @doc """
-  Encode numerals in accordance with https://en.wikipedia.org/wiki/Church_encoding
-
   ## Examples
 
       iex> ChurchNumerals.encode(0).(:arg)
@@ -23,8 +21,6 @@ defmodule ChurchNumerals do
   end
 
   @doc """
-  Decode numerals in accordance with https://en.wikipedia.org/wiki/ChurchNumerals_encoding
-
   ## Examples
 
       iex> zero = ChurchNumerals.encode(0)
