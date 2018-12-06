@@ -63,6 +63,44 @@ defmodule ChurchNumeralsTest do
     assert ChurchNumerals.decode(two) == 2
   end
 
+  ### MULTIPLY
+
+  test "mult(one, zero)" do
+    one = ChurchNumerals.encode(1)
+    zero = ChurchNumerals.encode(0)
+    assert ChurchNumerals.mult(one, zero) == zero
+  end
+
+  test "mult(zero, one)" do
+    one = ChurchNumerals.encode(1)
+    zero = ChurchNumerals.encode(0)
+    assert ChurchNumerals.mult(zero, one) == zero
+  end
+
+  test "mult(one, one)" do
+    one = ChurchNumerals.encode(1)
+    assert ChurchNumerals.mult(one, one) == one
+  end
+
+  test "mult(one, two)" do
+    one = ChurchNumerals.encode(1)
+    two = ChurchNumerals.encode(2)
+    assert ChurchNumerals.mult(one, two) == two
+  end
+
+  test "mult(two, one)" do
+    one = ChurchNumerals.encode(1)
+    two = ChurchNumerals.encode(2)
+    assert ChurchNumerals.mult(two, one) == two
+  end
+
+  test "mult(two, three)" do
+    two = ChurchNumerals.encode(2)
+    three = ChurchNumerals.encode(3)
+    six = ChurchNumerals.encode(6)
+    assert ChurchNumerals.mult(two, three) == six
+  end
+
   ### SUCCESSOR
 
   test "succ(one)" do
@@ -70,6 +108,8 @@ defmodule ChurchNumeralsTest do
     two = ChurchNumerals.succ(one)
     assert ChurchNumerals.decode(two) == 2
   end
+
+  ### PRIVATE FUNCTIONS ###
 
   defp assert_is_encoded_zero(zero) do
     assert is_function(zero)

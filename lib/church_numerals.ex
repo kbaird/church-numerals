@@ -61,6 +61,21 @@ defmodule ChurchNumerals do
   @doc """
   ## Examples
 
+      iex> two = ChurchNumerals.encode(2)
+      iex> three = ChurchNumerals.succ(two)
+      iex> six = ChurchNumerals.mult(two, three)
+      iex> ChurchNumerals.decode(six)
+      6
+  """
+  def mult(fun1, fun2) when is_function(fun1) and is_function(fun2) do
+    [num1, num2] = Enum.map([fun1, fun2], &decode/1)
+    num = num1 * num2
+    encode(num)
+  end
+
+  @doc """
+  ## Examples
+
       iex> zero = ChurchNumerals.encode(0)
       iex> one = ChurchNumerals.succ(zero)
       iex> two = ChurchNumerals.succ(one)
