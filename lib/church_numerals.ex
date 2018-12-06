@@ -52,8 +52,23 @@ defmodule ChurchNumerals do
   """
   def add(zero, fun) when is_function(zero, 1), do: fun
   def add(fun, zero) when is_function(zero, 1), do: fun
+
   def add(fun1, fun2) when is_function(fun1, 0) and is_function(fun2, 0) do
     sum = decode(fun1) + decode(fun2)
     encode(sum)
+  end
+
+  @doc """
+  ## Examples
+
+      iex> zero = ChurchNumerals.encode(0)
+      iex> one = ChurchNumerals.succ(zero)
+      iex> two = ChurchNumerals.succ(one)
+      iex> three = ChurchNumerals.succ(two)
+      iex> ChurchNumerals.decode(three)
+      3
+  """
+  def succ(num) when is_function(num) do
+    1 |> encode() |> add(num)
   end
 end

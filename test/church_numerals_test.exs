@@ -63,6 +63,14 @@ defmodule ChurchNumeralsTest do
     assert ChurchNumerals.decode(two) == 2
   end
 
+  ### SUCCESSOR
+
+  test "succ(one)" do
+    one = ChurchNumerals.encode(1)
+    two = ChurchNumerals.succ(one)
+    assert ChurchNumerals.decode(two) == 2
+  end
+
   defp assert_is_encoded_zero(zero) do
     assert is_function(zero)
     assert zero.(:arg) == :arg
