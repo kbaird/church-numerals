@@ -71,7 +71,7 @@ defmodule ChurchNumeralsTest do
 
   test "mult(one, two)" do
     two = ChurchNumerals.encode(2)
-    assert ChurchNumerals.mult(one(), two) == two
+    assert ChurchNumerals.decode(ChurchNumerals.mult(one(), two)) == 2
   end
 
   test "mult(two, one)" do
@@ -82,8 +82,37 @@ defmodule ChurchNumeralsTest do
   test "mult(two, three)" do
     two = ChurchNumerals.encode(2)
     three = ChurchNumerals.encode(3)
-    six = ChurchNumerals.encode(6)
-    assert ChurchNumerals.mult(two, three) == six
+    assert ChurchNumerals.decode(ChurchNumerals.mult(two, three)) == 6
+  end
+
+  ### EXP
+
+  test "exp(one, zero)" do
+    assert ChurchNumerals.decode(ChurchNumerals.exp(one(), zero())) == 1
+  end
+
+  test "exp(zero, one)" do
+    assert ChurchNumerals.exp(zero(), one()) == zero()
+  end
+
+  test "exp(one, one)" do
+    assert ChurchNumerals.exp(one(), one()) == one()
+  end
+
+  test "exp(one, two)" do
+    two = ChurchNumerals.encode(2)
+    assert ChurchNumerals.decode(ChurchNumerals.exp(one(), two)) == 1
+  end
+
+  test "exp(two, one)" do
+    two = ChurchNumerals.encode(2)
+    assert ChurchNumerals.decode(ChurchNumerals.exp(two, one())) == 2
+  end
+
+  test "exp(two, three)" do
+    two = ChurchNumerals.encode(2)
+    three = ChurchNumerals.encode(3)
+    assert ChurchNumerals.decode(ChurchNumerals.exp(two, three)) == 8
   end
 
   ### SUCCESSOR

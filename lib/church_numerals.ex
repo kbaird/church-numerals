@@ -73,11 +73,49 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(six)
       6
   """
-  def mult(fun1, fun2) when is_function(fun1) and is_function(fun2) do
+  def mult(_, zero) when is_zero_church(zero), do: zero
+  def mult(zero, _) when is_zero_church(zero), do: zero
+
+  def mult(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
     [num1, num2] = Enum.map([fun1, fun2], &decode/1)
     num = num1 * num2
     encode(num)
   end
+
+  @doc """
+  ## Examples
+
+      iex> two = ChurchNumerals.encode(2)
+      iex> three = ChurchNumerals.succ(two)
+      iex> eight = ChurchNumerals.exp(two, three)
+      iex> ChurchNumerals.decode(eight)
+      8
+
+      iex> two = ChurchNumerals.encode(2)
+      iex> three = ChurchNumerals.succ(two)
+      iex> nine = ChurchNumerals.exp(three, two)
+      iex> ChurchNumerals.decode(nine)
+      9
+  """
+  def exp(num, zero) when is_zero_church(zero), do: num
+  def exp(zero, _) when is_zero_church(zero), do: zero
+
+  def exp(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
+    case {one_church?(fun1), one_church?(fun2)} do
+      {true, _} -> fun1
+      {_, true} -> fun1
+      {_, _} -> exp(fun1, fun1, fun2.())
+    end
+  end
+
+  defp exp(fun1, _, cnt) when is_zero_church(cnt), do: fun1
+
+  defp exp(fun1, fun2, cnt) when is_pos_church(cnt) do
+    product = mult(fun1, fun2)
+    exp(product, fun2, cnt.())
+  end
+
+  defp one_church?(fun), do: is_zero_church(fun.())
 
   @doc """
   ## Examples
