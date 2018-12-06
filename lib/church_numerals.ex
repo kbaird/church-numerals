@@ -35,4 +35,25 @@ defmodule ChurchNumerals do
 
   defp decode(fun, num) when is_function(fun, 1), do: num
   defp decode(fun, num), do: decode(fun.(), num + 1)
+
+  @doc """
+  ## Examples
+
+      iex> zero = ChurchNumerals.encode(0)
+      iex> zero = ChurchNumerals.add(zero, zero)
+      iex> ChurchNumerals.decode(zero)
+      0
+
+      iex> zero = ChurchNumerals.encode(0)
+      iex> five = ChurchNumerals.encode(5)
+      iex> five = ChurchNumerals.add(zero, five)
+      iex> ChurchNumerals.decode(five)
+      5
+  """
+  def add(zero, fun) when is_function(zero, 1), do: fun
+  def add(fun, zero) when is_function(zero, 1), do: fun
+  def add(fun1, fun2) when is_function(fun1, 0) and is_function(fun2, 0) do
+    sum = decode(fun1) + decode(fun2)
+    encode(sum)
+  end
 end
