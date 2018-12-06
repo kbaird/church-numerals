@@ -87,7 +87,5 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(three)
       3
   """
-  def succ(num) when is_function(num) do
-    1 |> encode() |> add(num)
-  end
+  def succ(num) when is_function(num), do: fn -> num end
 end
