@@ -4,15 +4,13 @@ defmodule Church do
   """
 
   @doc """
-  Hello world.
+  Encode numerals in accordance with https://en.wikipedia.org/wiki/Church_encoding
 
   ## Examples
 
-      iex> Church.hello()
-      :world
+      iex> Church.encode(0).(:arg)
+      :arg
 
   """
-  def hello do
-    :world
-  end
+  def encode(0), do: fn arg -> arg end
 end
