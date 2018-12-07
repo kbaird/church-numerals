@@ -77,9 +77,18 @@ defmodule ChurchNumerals do
   def mult(zero, _) when is_zero_church(zero), do: zero
 
   def mult(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
-    [num1, num2] = Enum.map([fun1, fun2], &decode/1)
-    num = num1 * num2
-    encode(num)
+    case {one_church?(fun1), one_church?(fun2)} do
+      {true, _} -> fun2
+      {_, true} -> fun1
+      {_, _} -> mult(fun1, fun1, fun2.())
+    end
+  end
+
+  defp mult(fun1, _, cnt) when is_zero_church(cnt), do: fun1
+
+  defp mult(fun1, fun2, cnt) when is_pos_church(cnt) do
+    sum = add(fun1, fun2)
+    mult(sum, fun2, cnt.())
   end
 
   @doc """
@@ -115,8 +124,6 @@ defmodule ChurchNumerals do
     exp(product, fun2, cnt.())
   end
 
-  defp one_church?(fun), do: is_zero_church(fun.())
-
   @doc """
   ## Examples
 
@@ -128,4 +135,8 @@ defmodule ChurchNumerals do
       3
   """
   def succ(num) when is_function(num), do: fn -> num end
+
+  ### PRIVATE FUNCTIONS ###
+
+  defp one_church?(fun), do: is_zero_church(fun.())
 end
