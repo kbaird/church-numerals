@@ -17,8 +17,7 @@ defmodule ChurchNumeralsTest do
 
   test "encode 12" do
     twelve = ChurchNumerals.encode(12)
-    zero = twelve.().().().().().().().().().().().()
-    assert_is_encoded_zero(zero)
+    assert_is_encoded(twelve, 12)
   end
 
   ### DECODE
@@ -125,8 +124,13 @@ defmodule ChurchNumeralsTest do
   ### PRIVATE FUNCTIONS ###
 
   defp assert_is_encoded_zero(zero) do
-    assert is_function(zero)
-    assert zero.(:arg) == :arg
+    assert_is_encoded(zero, 0)
+  end
+
+  defp assert_is_encoded(num, 0) when is_function(num), do: assert(num.(:arg) == :arg)
+
+  defp assert_is_encoded(num, target) when is_function(num) and is_integer(target) do
+    assert_is_encoded(num.(), target - 1)
   end
 
   defp zero, do: ChurchNumerals.encode(0)

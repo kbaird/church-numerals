@@ -130,6 +130,6 @@ defmodule ChurchNumerals do
 
   defp recurse(church1, church2, steps_remaining, fun) when is_pos_church(steps_remaining) do
     acc = fun.(church1, church2)
-    recurse(acc, church2, cnt.(), fun)
+    recurse(acc, church2, steps_remaining.(), fun)
   end
 end
