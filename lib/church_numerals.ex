@@ -126,9 +126,9 @@ defmodule ChurchNumerals do
 
   defp one_church?(fun), do: is_zero_church(fun.())
 
-  defp recurse(church1, _, cnt, _fun) when is_zero_church(cnt), do: church1
+  defp recurse(num, _, steps_remaining, _fun) when is_zero_church(steps_remaining), do: num
 
-  defp recurse(church1, church2, cnt, fun) when is_pos_church(cnt) do
+  defp recurse(church1, church2, steps_remaining, fun) when is_pos_church(steps_remaining) do
     acc = fun.(church1, church2)
     recurse(acc, church2, cnt.(), fun)
   end
