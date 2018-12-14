@@ -80,15 +80,8 @@ defmodule ChurchNumerals do
     case {one_church?(fun1), one_church?(fun2)} do
       {true, _} -> fun2
       {_, true} -> fun1
-      {_, _} -> mult(fun1, fun1, fun2.())
+      {_, _} -> recurse(fun1, fun1, fun2.(), &add/2)
     end
-  end
-
-  defp mult(fun1, _, cnt) when is_zero_church(cnt), do: fun1
-
-  defp mult(fun1, fun2, cnt) when is_pos_church(cnt) do
-    sum = add(fun1, fun2)
-    mult(sum, fun2, cnt.())
   end
 
   @doc """
@@ -113,15 +106,8 @@ defmodule ChurchNumerals do
     case {one_church?(fun1), one_church?(fun2)} do
       {true, _} -> fun1
       {_, true} -> fun1
-      {_, _} -> exp(fun1, fun1, fun2.())
+      {_, _} -> recurse(fun1, fun1, fun2.(), &mult/2)
     end
-  end
-
-  defp exp(fun1, _, cnt) when is_zero_church(cnt), do: fun1
-
-  defp exp(fun1, fun2, cnt) when is_pos_church(cnt) do
-    product = mult(fun1, fun2)
-    exp(product, fun2, cnt.())
   end
 
   @doc """
@@ -139,4 +125,11 @@ defmodule ChurchNumerals do
   ### PRIVATE FUNCTIONS ###
 
   defp one_church?(fun), do: is_zero_church(fun.())
+
+  defp recurse(church1, _, cnt, _fun) when is_zero_church(cnt), do: church1
+
+  defp recurse(church1, church2, cnt, fun) when is_pos_church(cnt) do
+    acc = fun.(church1, church2)
+    recurse(acc, church2, cnt.(), fun)
+  end
 end
