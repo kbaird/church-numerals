@@ -1,7 +1,12 @@
 defmodule ChurchNumerals do
   @moduledoc """
   Documentation for ChurchNumerals, in accordance with https://en.wikipedia.org/wiki/Church_encoding
+  https://meet.google.com/linkredirect?authuser=1&dest=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FChurch_encoding%23Signed_numbers
+  https://meet.google.com/linkredirect?authuser=1&dest=http%3A%2F%2Fwww.cse.unt.edu%2F~tarau%2Fteaching%2FPL%2Fdocs%2FChurch%2520encoding.pdf
   """
+
+  # zero as fun that does not return a fun
+  # property-based testing
 
   defguard is_pos_int(num) when is_integer(num) and num > 0
   defguard is_pos_church(encoded) when is_function(encoded, 0)
@@ -58,7 +63,7 @@ defmodule ChurchNumerals do
   def add(fun, zero) when is_zero_church(zero), do: fun
 
   def add(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
-    add(fn -> fun1 end, fun2.())
+    add(succ(fun1), prev(fun2))
     # alternately
     # additional_turns = decode(fun2)
     # Enum.reduce(1..additional_turns, fun1, fn _, acc -> fn -> acc end end)
@@ -109,6 +114,16 @@ defmodule ChurchNumerals do
       {_, _} -> recurse(fun1, fun1, fun2.(), &mult/2)
     end
   end
+
+  @doc """
+  ## Examples
+
+      iex> one = ChurchNumerals.encode(1)
+      iex> zero = ChurchNumerals.prev(one)
+      iex> ChurchNumerals.decode(zero)
+      0
+  """
+  def prev(num) when is_function(num), do: num.()
 
   @doc """
   ## Examples

@@ -114,6 +114,13 @@ defmodule ChurchNumeralsTest do
     assert ChurchNumerals.decode(ChurchNumerals.exp(two, three)) == 8
   end
 
+  ### PREVIOUS
+
+  test "previous(one)" do
+    zero = one() |> ChurchNumerals.prev()
+    assert ChurchNumerals.decode(zero) == 0
+  end
+
   ### SUCCESSOR
 
   test "succ(one)" do
