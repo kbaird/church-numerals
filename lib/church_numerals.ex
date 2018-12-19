@@ -1,8 +1,7 @@
 defmodule ChurchNumerals do
   @moduledoc """
   Documentation for ChurchNumerals, in accordance with https://en.wikipedia.org/wiki/Church_encoding
-  https://meet.google.com/linkredirect?authuser=1&dest=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FChurch_encoding%23Signed_numbers
-  https://meet.google.com/linkredirect?authuser=1&dest=http%3A%2F%2Fwww.cse.unt.edu%2F~tarau%2Fteaching%2FPL%2Fdocs%2FChurch%2520encoding.pdf
+  http://www.cse.unt.edu/~tarau/teaching/PL/docs/Church%20encoding.pdf
   """
 
   # zero as fun that does not return a fun
