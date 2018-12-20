@@ -61,12 +61,15 @@ defmodule ChurchNumeralsTest do
     assert ChurchNumerals.decode(two) == 2
   end
 
-  property "adding 2 positives are always > 1" do
+  property "adding 2 positives match" do
     check all int1 <- positive_integer(),
               int2 <- positive_integer() do
       cn1 = ChurchNumerals.encode(int1)
       cn2 = ChurchNumerals.encode(int2)
-      assert ChurchNumerals.add(cn1, cn2) |> ChurchNumerals.decode() > 1
+      encoded = ChurchNumerals.add(cn1, cn2)
+      decoded = ChurchNumerals.decode(encoded)
+      assert decoded > 1
+      assert decoded == int1 + int2
     end
   end
 
@@ -100,12 +103,15 @@ defmodule ChurchNumeralsTest do
     assert ChurchNumerals.decode(ChurchNumerals.mult(two, three)) == 6
   end
 
-  property "multing 2 positives are always > 0" do
+  property "multing 2 positives match" do
     check all int1 <- positive_integer(),
               int2 <- positive_integer() do
       cn1 = ChurchNumerals.encode(int1)
       cn2 = ChurchNumerals.encode(int2)
-      assert ChurchNumerals.mult(cn1, cn2) |> ChurchNumerals.decode() > 0
+      encoded = ChurchNumerals.mult(cn1, cn2)
+      decoded = ChurchNumerals.decode(encoded)
+      assert decoded > 0
+      assert decoded == int1 * int2
     end
   end
 
