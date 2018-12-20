@@ -5,7 +5,6 @@ defmodule ChurchNumerals do
   """
 
   # zero as fun that does not return a fun
-  # property-based testing
 
   defguard is_pos_int(num) when is_integer(num) and num > 0
   defguard is_pos_church(encoded) when is_function(encoded, 0)
