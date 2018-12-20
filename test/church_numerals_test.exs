@@ -1,5 +1,6 @@
 defmodule ChurchNumeralsTest do
   use ExUnit.Case
+  use ExUnitProperties
   doctest ChurchNumerals
 
   ### ENCODE
@@ -35,6 +36,12 @@ defmodule ChurchNumeralsTest do
     assert ChurchNumerals.decode(high) == 9999
   end
 
+  property "encode/1 and decode/1 combined are a no-op" do
+    check all int <- positive_integer() do
+      assert int |> ChurchNumerals.encode() |> ChurchNumerals.decode() == int
+    end
+  end
+
   ### ADD
 
   test "add zero and zero" do
@@ -52,6 +59,15 @@ defmodule ChurchNumeralsTest do
   test "add one and one" do
     two = ChurchNumerals.add(one(), one())
     assert ChurchNumerals.decode(two) == 2
+  end
+
+  property "adding 2 positives are always > 1" do
+    check all int1 <- positive_integer(),
+              int2 <- positive_integer() do
+      cn1 = ChurchNumerals.encode(int1)
+      cn2 = ChurchNumerals.encode(int2)
+      assert ChurchNumerals.add(cn1, cn2) |> ChurchNumerals.decode() > 1
+    end
   end
 
   ### MULTIPLY
@@ -82,6 +98,15 @@ defmodule ChurchNumeralsTest do
     two = ChurchNumerals.encode(2)
     three = ChurchNumerals.encode(3)
     assert ChurchNumerals.decode(ChurchNumerals.mult(two, three)) == 6
+  end
+
+  property "multing 2 positives are always > 0" do
+    check all int1 <- positive_integer(),
+              int2 <- positive_integer() do
+      cn1 = ChurchNumerals.encode(int1)
+      cn2 = ChurchNumerals.encode(int2)
+      assert ChurchNumerals.mult(cn1, cn2) |> ChurchNumerals.decode() > 0
+    end
   end
 
   ### EXP
@@ -121,11 +146,25 @@ defmodule ChurchNumeralsTest do
     assert ChurchNumerals.decode(zero) == 0
   end
 
+  property "prev/1 is always arg - 1" do
+    check all int <- positive_integer() do
+      encoded = int |> ChurchNumerals.encode() |> ChurchNumerals.prev()
+      assert ChurchNumerals.decode(encoded) == int - 1
+    end
+  end
+
   ### SUCCESSOR
 
   test "succ(one)" do
     two = one() |> ChurchNumerals.succ()
     assert ChurchNumerals.decode(two) == 2
+  end
+
+  property "succ/1 is always arg + 1" do
+    check all int <- positive_integer() do
+      encoded = int |> ChurchNumerals.encode() |> ChurchNumerals.succ()
+      assert ChurchNumerals.decode(encoded) == int + 1
+    end
   end
 
   ### PRIVATE FUNCTIONS ###
