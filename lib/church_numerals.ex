@@ -56,6 +56,12 @@ defmodule ChurchNumerals do
       iex> five = ChurchNumerals.add(zero, five)
       iex> ChurchNumerals.decode(five)
       5
+
+      iex> one = ChurchNumerals.encode(1)
+      iex> two = ChurchNumerals.encode(2)
+      iex> three = ChurchNumerals.add(one, two)
+      iex> ChurchNumerals.decode(three)
+      3
   """
   def add(zero, fun) when is_zero_church(zero), do: fun
   def add(fun, zero) when is_zero_church(zero), do: fun
