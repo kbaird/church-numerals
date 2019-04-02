@@ -145,15 +145,15 @@ defmodule ChurchNumerals do
 
   defp one_church?(fun) when is_function(fun, 0), do: is_zero_church(fun.())
 
-  defp recurse(church_num, _, steps_remaining, _fun)
+  defp recurse(church_num, _, steps_remaining, _step_fun)
        when is_function(church_num) and is_zero_church(steps_remaining) do
     church_num
   end
 
-  defp recurse(church1, church2, steps_remaining, fun)
+  defp recurse(church1, church2, steps_remaining, step_fun)
        when is_function(church1) and is_function(church2) and
-              is_pos_church(steps_remaining) and is_function(fun) do
-    acc = fun.(church1, church2)
-    recurse(acc, church2, steps_remaining.(), fun)
+              is_pos_church(steps_remaining) and is_function(step_fun) do
+    acc = step_fun.(church1, church2)
+    recurse(acc, church2, steps_remaining.(), step_fun)
   end
 end
