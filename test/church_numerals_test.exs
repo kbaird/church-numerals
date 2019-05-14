@@ -3,37 +3,11 @@ defmodule ChurchNumeralsTest do
   use ExUnitProperties
   doctest ChurchNumerals
 
-  ### ENCODE
+  ### ENCODE & DECODE
 
-  test "encode 0" do
+  test "encode and decode 0" do
     zero = ChurchNumerals.encode(0)
-    assert_is_encoded_zero(zero)
-  end
-
-  test "encode 1" do
-    one = ChurchNumerals.encode(1)
-    zero = one.()
-    assert_is_encoded_zero(zero)
-  end
-
-  test "encode 12" do
-    twelve = ChurchNumerals.encode(12)
-    assert_is_encoded(twelve, 12)
-  end
-
-  ### DECODE
-
-  test "decode 0" do
-    assert ChurchNumerals.decode(zero()) == 0
-  end
-
-  test "decode 1" do
-    assert ChurchNumerals.decode(one()) == 1
-  end
-
-  test "decode 9999" do
-    high = ChurchNumerals.encode(9999)
-    assert ChurchNumerals.decode(high) == 9999
+    assert ChurchNumerals.decode(zero) == 0
   end
 
   property "encode/1 and decode/1 combined are a no-op" do
@@ -174,16 +148,6 @@ defmodule ChurchNumeralsTest do
   end
 
   ### PRIVATE FUNCTIONS ###
-
-  defp assert_is_encoded_zero(zero) do
-    assert_is_encoded(zero, 0)
-  end
-
-  defp assert_is_encoded(num, 0) when is_function(num), do: assert(num.(:arg) == :arg)
-
-  defp assert_is_encoded(num, target) when is_function(num) and is_integer(target) do
-    assert_is_encoded(num.(), target - 1)
-  end
 
   defp zero, do: ChurchNumerals.encode(0)
   defp one, do: ChurchNumerals.encode(1)
