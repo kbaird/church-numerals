@@ -2,46 +2,47 @@ defmodule ChurchNumeralsTest do
   use ExUnit.Case
   use ExUnitProperties
   doctest ChurchNumerals
+  alias ChurchNumerals, as: CN
 
   ### ENCODE & DECODE
 
   test "encode and decode 0" do
-    zero = ChurchNumerals.encode(0)
-    assert ChurchNumerals.decode(zero) == 0
+    zero = CN.encode(0)
+    assert CN.decode(zero) == 0
   end
 
   property "encode/1 and decode/1 combined are a no-op" do
     check all int <- positive_integer() do
-      assert int |> ChurchNumerals.encode() |> ChurchNumerals.decode() == int
+      assert int |> CN.encode() |> CN.decode() == int
     end
   end
 
   ### ADD
 
   test "add zero and zero" do
-    assert ChurchNumerals.add(zero(), zero()) == zero()
+    assert CN.add(zero(), zero()) == zero()
   end
 
   test "add zero and one" do
-    assert ChurchNumerals.add(zero(), one()) == one()
+    assert CN.add(zero(), one()) == one()
   end
 
   test "add one and zero" do
-    assert ChurchNumerals.add(one(), zero()) == one()
+    assert CN.add(one(), zero()) == one()
   end
 
   test "add one and one" do
-    two = ChurchNumerals.add(one(), one())
-    assert ChurchNumerals.decode(two) == 2
+    two = CN.add(one(), one())
+    assert CN.decode(two) == 2
   end
 
   property "adding 2 positives match" do
     check all int1 <- positive_integer(),
               int2 <- positive_integer() do
-      cn1 = ChurchNumerals.encode(int1)
-      cn2 = ChurchNumerals.encode(int2)
-      encoded = ChurchNumerals.add(cn1, cn2)
-      decoded = ChurchNumerals.decode(encoded)
+      cn1 = CN.encode(int1)
+      cn2 = CN.encode(int2)
+      encoded = CN.add(cn1, cn2)
+      decoded = CN.decode(encoded)
       assert decoded > 1
       assert decoded == int1 + int2
     end
@@ -50,40 +51,40 @@ defmodule ChurchNumeralsTest do
   ### MULTIPLY
 
   test "mult(one, zero)" do
-    assert ChurchNumerals.mult(one(), zero()) == zero()
+    assert CN.mult(one(), zero()) == zero()
   end
 
   test "mult(zero, one)" do
-    assert ChurchNumerals.mult(zero(), one()) == zero()
+    assert CN.mult(zero(), one()) == zero()
   end
 
   test "mult(one, one)" do
-    assert ChurchNumerals.mult(one(), one()) == one()
+    assert CN.mult(one(), one()) == one()
   end
 
   test "mult(one, two)" do
-    two = ChurchNumerals.encode(2)
-    assert ChurchNumerals.decode(ChurchNumerals.mult(one(), two)) == 2
+    two = CN.encode(2)
+    assert CN.decode(CN.mult(one(), two)) == 2
   end
 
   test "mult(two, one)" do
-    two = ChurchNumerals.encode(2)
-    assert ChurchNumerals.mult(two, one()) == two
+    two = CN.encode(2)
+    assert CN.mult(two, one()) == two
   end
 
   test "mult(two, three)" do
-    two = ChurchNumerals.encode(2)
-    three = ChurchNumerals.encode(3)
-    assert ChurchNumerals.decode(ChurchNumerals.mult(two, three)) == 6
+    two = CN.encode(2)
+    three = CN.encode(3)
+    assert CN.decode(CN.mult(two, three)) == 6
   end
 
   property "multing 2 positives match" do
     check all int1 <- positive_integer(),
               int2 <- positive_integer() do
-      cn1 = ChurchNumerals.encode(int1)
-      cn2 = ChurchNumerals.encode(int2)
-      encoded = ChurchNumerals.mult(cn1, cn2)
-      decoded = ChurchNumerals.decode(encoded)
+      cn1 = CN.encode(int1)
+      cn2 = CN.encode(int2)
+      encoded = CN.mult(cn1, cn2)
+      decoded = CN.decode(encoded)
       assert decoded > 0
       assert decoded == int1 * int2
     end
@@ -92,39 +93,39 @@ defmodule ChurchNumeralsTest do
   ### EXP
 
   test "exp(one, zero)" do
-    assert ChurchNumerals.decode(ChurchNumerals.exp(one(), zero())) == 1
+    assert CN.decode(CN.exp(one(), zero())) == 1
   end
 
   test "exp(zero, one)" do
-    assert ChurchNumerals.exp(zero(), one()) == zero()
+    assert CN.exp(zero(), one()) == zero()
   end
 
   test "exp(one, one)" do
-    assert ChurchNumerals.exp(one(), one()) == one()
+    assert CN.exp(one(), one()) == one()
   end
 
   test "exp(one, two)" do
-    two = ChurchNumerals.encode(2)
-    assert ChurchNumerals.decode(ChurchNumerals.exp(one(), two)) == 1
+    two = CN.encode(2)
+    assert CN.decode(CN.exp(one(), two)) == 1
   end
 
   test "exp(two, one)" do
-    two = ChurchNumerals.encode(2)
-    assert ChurchNumerals.decode(ChurchNumerals.exp(two, one())) == 2
+    two = CN.encode(2)
+    assert CN.decode(CN.exp(two, one())) == 2
   end
 
   test "exp(two, three)" do
-    two = ChurchNumerals.encode(2)
-    three = ChurchNumerals.encode(3)
-    assert ChurchNumerals.decode(ChurchNumerals.exp(two, three)) == 8
+    two = CN.encode(2)
+    three = CN.encode(3)
+    assert CN.decode(CN.exp(two, three)) == 8
   end
 
   property "0 to any power is 0" do
-    zero = ChurchNumerals.encode(0)
+    zero = CN.encode(0)
     check all int <- positive_integer() do
-      power = ChurchNumerals.encode(int)
-      encoded = ChurchNumerals.exp(zero, power)
-      decoded = ChurchNumerals.decode(encoded)
+      power = CN.encode(int)
+      encoded = CN.exp(zero, power)
+      decoded = CN.decode(encoded)
       assert decoded == 0
     end
   end
@@ -132,33 +133,33 @@ defmodule ChurchNumeralsTest do
   ### PREVIOUS
 
   test "previous(one)" do
-    zero = one() |> ChurchNumerals.prev()
-    assert ChurchNumerals.decode(zero) == 0
+    zero = one() |> CN.prev()
+    assert CN.decode(zero) == 0
   end
 
   property "prev/1 is always arg - 1" do
     check all int <- positive_integer() do
-      encoded = int |> ChurchNumerals.encode() |> ChurchNumerals.prev()
-      assert ChurchNumerals.decode(encoded) == int - 1
+      encoded = int |> CN.encode() |> CN.prev()
+      assert CN.decode(encoded) == int - 1
     end
   end
 
   ### SUCCESSOR
 
   test "succ(one)" do
-    two = one() |> ChurchNumerals.succ()
-    assert ChurchNumerals.decode(two) == 2
+    two = one() |> CN.succ()
+    assert CN.decode(two) == 2
   end
 
   property "succ/1 is always arg + 1" do
     check all int <- positive_integer() do
-      encoded = int |> ChurchNumerals.encode() |> ChurchNumerals.succ()
-      assert ChurchNumerals.decode(encoded) == int + 1
+      encoded = int |> CN.encode() |> CN.succ()
+      assert CN.decode(encoded) == int + 1
     end
   end
 
   ### PRIVATE FUNCTIONS ###
 
-  defp zero, do: ChurchNumerals.encode(0)
-  defp one, do: ChurchNumerals.encode(1)
+  defp zero, do: CN.encode(0)
+  defp one, do: CN.encode(1)
 end
