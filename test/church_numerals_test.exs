@@ -119,6 +119,16 @@ defmodule ChurchNumeralsTest do
     assert ChurchNumerals.decode(ChurchNumerals.exp(two, three)) == 8
   end
 
+  property "0 to any power is 0" do
+    zero = ChurchNumerals.encode(0)
+    check all int <- positive_integer() do
+      power = ChurchNumerals.encode(int)
+      encoded = ChurchNumerals.exp(zero, power)
+      decoded = ChurchNumerals.decode(encoded)
+      assert decoded == 0
+    end
+  end
+
   ### PREVIOUS
 
   test "previous(one)" do
