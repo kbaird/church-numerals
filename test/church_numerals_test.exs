@@ -130,6 +130,16 @@ defmodule ChurchNumeralsTest do
     end
   end
 
+  property "any pos int to the zeroth power is 1" do
+    zero = CN.encode(0)
+    check all int <- positive_integer() do
+      base = CN.encode(int)
+      encoded = CN.exp(base, zero)
+      decoded = CN.decode(encoded)
+      assert decoded == 1
+    end
+  end
+
   ### PREVIOUS
 
   test "previous(one)" do

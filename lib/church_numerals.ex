@@ -108,7 +108,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(nine)
       9
   """
-  def exp(num, zero) when is_zero_church(zero), do: num
+  def exp(_, zero) when is_zero_church(zero), do: encode(1)
   def exp(zero, _) when is_zero_church(zero), do: zero
 
   def exp(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
