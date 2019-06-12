@@ -7,8 +7,7 @@ defmodule ChurchNumeralsTest do
   ### ENCODE & DECODE
 
   test "encode and decode 0" do
-    zero = CN.encode(0)
-    assert CN.decode(zero) == 0
+    assert CN.decode(zero()) == 0
   end
 
   property "encode/1 and decode/1 combined are a no-op" do
@@ -31,11 +30,6 @@ defmodule ChurchNumeralsTest do
     assert CN.add(one(), zero()) == one()
   end
 
-  test "add one and one" do
-    two = CN.add(one(), one())
-    assert CN.decode(two) == 2
-  end
-
   property "adding 2 positives match" do
     check all int1 <- positive_integer(),
               int2 <- positive_integer() do
@@ -56,20 +50,6 @@ defmodule ChurchNumeralsTest do
 
   test "mult(zero, one)" do
     assert CN.mult(zero(), one()) == zero()
-  end
-
-  test "mult(one, one)" do
-    assert CN.mult(one(), one()) == one()
-  end
-
-  test "mult(one, two)" do
-    two = CN.encode(2)
-    assert CN.decode(CN.mult(one(), two)) == 2
-  end
-
-  test "mult(two, one)" do
-    two = CN.encode(2)
-    assert CN.mult(two, one()) == two
   end
 
   test "mult(two, three)" do
@@ -121,20 +101,18 @@ defmodule ChurchNumeralsTest do
   end
 
   property "0 to any power is 0" do
-    zero = CN.encode(0)
     check all int <- positive_integer() do
       power = CN.encode(int)
-      encoded = CN.exp(zero, power)
+      encoded = CN.exp(zero(), power)
       decoded = CN.decode(encoded)
       assert decoded == 0
     end
   end
 
   property "any pos int to the zeroth power is 1" do
-    zero = CN.encode(0)
     check all int <- positive_integer() do
       base = CN.encode(int)
-      encoded = CN.exp(base, zero)
+      encoded = CN.exp(base, zero())
       decoded = CN.decode(encoded)
       assert decoded == 1
     end
