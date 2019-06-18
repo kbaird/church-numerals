@@ -1,6 +1,8 @@
 defmodule ChurchNumerals do
   @moduledoc """
-  Documentation for ChurchNumerals, in accordance with https://en.wikipedia.org/wiki/Church_encoding
+  Documentation for ChurchNumerals, in accordance with
+    https://en.wikipedia.org/wiki/Church_encoding
+
   http://www.cse.unt.edu/~tarau/teaching/PL/docs/Church%20encoding.pdf
   """
 
@@ -13,8 +15,8 @@ defmodule ChurchNumerals do
   @doc """
   ## Examples
 
-      iex> ChurchNumerals.encode(0).(:arg)
-      :arg
+      iex> ChurchNumerals.encode(0).(:identity_fun)
+      :identity_fun
 
       iex> one = ChurchNumerals.encode(1)
       iex> zero = one.()
