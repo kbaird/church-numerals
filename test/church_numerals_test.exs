@@ -118,6 +118,18 @@ defmodule ChurchNumeralsTest do
     end
   end
 
+  test "exponentiating 2 positive digits match" do
+    for int1 <- digits_to(7),
+        int2 <- digits_to(7) do
+      cn1 = CN.encode(int1)
+      cn2 = CN.encode(int2)
+      encoded = CN.exp(cn1, cn2)
+      decoded = CN.decode(encoded)
+      assert decoded > 0
+      assert decoded == :math.pow(int1, int2)
+    end
+  end
+
   ### PREVIOUS
 
   test "previous(one)" do
@@ -150,4 +162,5 @@ defmodule ChurchNumeralsTest do
 
   defp zero, do: CN.encode(0)
   defp one, do: CN.encode(1)
+  defp digits_to(max), do: 1..max
 end
