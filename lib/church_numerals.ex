@@ -4,11 +4,15 @@ defmodule ChurchNumerals do
     https://en.wikipedia.org/wiki/Church_encoding
 
   http://www.cse.unt.edu/~tarau/teaching/PL/docs/Church%20encoding.pdf
+
+  Encoding conventions:
+    Implement zero as a fun that does not return a fun
+      (i.e., it returns zero additional wrappings within a fun)
+
+    Higher integers wrap as many times as their value in a 0-arity fun
   """
 
-  # zero as fun that does not return a fun
-
-  defguard is_pos_int(num) when is_integer(num) and num > 0
+  defguard is_pos_raw_int(num) when is_integer(num) and num > 0
   defguard is_pos_church(encoded) when is_function(encoded, 0)
   defguard is_zero_church(encoded) when is_function(encoded, 1)
 
@@ -25,7 +29,7 @@ defmodule ChurchNumerals do
   """
   def encode(0), do: fn arg -> arg end
 
-  def encode(num) when is_pos_int(num) do
+  def encode(num) when is_pos_raw_int(num) do
     fn -> encode(num - 1) end
   end
 
