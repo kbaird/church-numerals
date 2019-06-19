@@ -109,6 +109,15 @@ defmodule ChurchNumeralsTest do
     end
   end
 
+  property "1 to any power is 1" do
+    check all int <- positive_integer() do
+      power = CN.encode(int)
+      encoded = CN.exp(one(), power)
+      decoded = CN.decode(encoded)
+      assert decoded == 1
+    end
+  end
+
   property "any pos int to the zeroth power is 1" do
     check all int <- positive_integer() do
       base = CN.encode(int)
