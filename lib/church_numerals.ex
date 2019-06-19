@@ -6,7 +6,7 @@ defmodule ChurchNumerals do
   http://www.cse.unt.edu/~tarau/teaching/PL/docs/Church%20encoding.pdf
 
   Encoding conventions:
-    Implement zero as a fun that does not return a fun
+    Represent zero as a fun that does not return a fun
       (i.e., it returns zero additional wrappings within a fun)
 
     Higher integers wrap as many times as their value in a 0-arity fun
@@ -76,7 +76,8 @@ defmodule ChurchNumerals do
     add(succ(fun1), prev(fun2))
     # alternately
     # additional_turns = decode(fun2)
-    # Enum.reduce(1..additional_turns, fun1, fn _, acc -> fn -> acc end end)
+    # wrap_accumulator = fn _, acc -> fn -> acc end end
+    # Enum.reduce(1..additional_turns, fun1, wrap_accumulator)
   end
 
   @doc """
