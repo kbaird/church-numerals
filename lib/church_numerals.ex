@@ -158,16 +158,16 @@ defmodule ChurchNumerals do
     is_zero_church(fun.())
   end
 
-  defp recurse(result, _operand, steps_remaining, _step_fun)
+  defp recurse(result, _operand, steps_remaining, _operation)
        # Note: unwrapping steps_remaining earlier allows use of is_zero_church here
        when is_pos_church(result) and is_zero_church(steps_remaining) do
     result
   end
 
-  defp recurse(acc, operand, steps_remaining, step_fun)
+  defp recurse(acc, operand, steps_remaining, operation)
        when is_pos_church(acc) and is_pos_church(operand) and
-              is_pos_church(steps_remaining) and is_function(step_fun) do
-    acc = step_fun.(acc, operand)
-    recurse(acc, operand, steps_remaining.(), step_fun)
+              is_pos_church(steps_remaining) and is_function(operation) do
+    acc = operation.(acc, operand)
+    recurse(acc, operand, steps_remaining.(), operation)
   end
 end
