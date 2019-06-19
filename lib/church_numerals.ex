@@ -22,11 +22,6 @@ defmodule ChurchNumerals do
 
       iex> ChurchNumerals.encode(0).(:identity_fun)
       :identity_fun
-
-      iex> one = ChurchNumerals.encode(1)
-      iex> zero = one.()
-      iex> zero.(:arg)
-      :arg
   """
   def encode(0), do: fn arg -> arg end
 
@@ -102,7 +97,7 @@ defmodule ChurchNumerals do
     case {one_church?(fun1), one_church?(fun2)} do
       {true, _} -> fun2
       {_, true} -> fun1
-      # Note: unwrapping fun2 once here eases use of guards inside recurse/4
+      # Note: unwrapping fun2 once here eases use of guards for recurse/4
       {_, _} -> recurse(fun1, fun1, fun2.(), &add/2)
     end
   end
@@ -130,7 +125,7 @@ defmodule ChurchNumerals do
     case {one_church?(fun1), one_church?(fun2)} do
       {true, _} -> fun1
       {_, true} -> fun1
-      # Note: unwrapping fun2 once here eases use of guards inside recurse/4
+      # Note: unwrapping fun2 once here eases use of guards for recurse/4
       {_, _} -> recurse(fun1, fun1, fun2.(), &mult/2)
     end
   end
