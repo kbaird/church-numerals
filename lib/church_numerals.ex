@@ -9,7 +9,8 @@ defmodule ChurchNumerals do
     Represent zero as a fun that does not return a fun
       (i.e., it returns zero additional wrappings within a fun)
 
-    Higher integers wrap as many times as their value in a 0-arity fun
+    Higher integers wrap their argument as many times as their
+      value inside a 0-arity fun
   """
 
   defguard is_pos_raw_int(num) when is_integer(num) and num > 0
@@ -72,7 +73,8 @@ defmodule ChurchNumerals do
   def add(zero, fun) when is_zero_church(zero), do: fun
   def add(fun, zero) when is_zero_church(zero), do: fun
 
-  def add(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
+  def add(fun1, fun2)
+      when is_pos_church(fun1) and is_pos_church(fun2) do
     add(succ(fun1), prev(fun2))
     # alternately
     # additional_turns = decode(fun2)
@@ -92,7 +94,8 @@ defmodule ChurchNumerals do
   def mult(_, zero) when is_zero_church(zero), do: zero
   def mult(zero, _) when is_zero_church(zero), do: zero
 
-  def mult(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
+  def mult(fun1, fun2)
+      when is_pos_church(fun1) and is_pos_church(fun2) do
     case {one_church?(fun1), one_church?(fun2)} do
       {true, _} -> fun2
       {_, true} -> fun1
@@ -118,7 +121,8 @@ defmodule ChurchNumerals do
   def exp(_, zero) when is_zero_church(zero), do: encode(1)
   def exp(zero, _) when is_zero_church(zero), do: zero
 
-  def exp(fun1, fun2) when is_pos_church(fun1) and is_pos_church(fun2) do
+  def exp(fun1, fun2)
+      when is_pos_church(fun1) and is_pos_church(fun2) do
     case {one_church?(fun1), one_church?(fun2)} do
       {true, _} -> fun1
       {_, true} -> fun1
