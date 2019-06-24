@@ -19,15 +19,18 @@ defmodule ChurchNumeralsTest do
   ### ADD
 
   test "add zero and zero" do
-    assert CN.add(zero(), zero()) == zero()
+    sum = CN.add(zero(), zero())
+    assert CN.decode(sum) == 0
   end
 
   test "add zero and one" do
-    assert CN.add(zero(), one()) == one()
+    sum = CN.add(zero(), one())
+    assert CN.decode(sum) == 1
   end
 
   test "add one and zero" do
-    assert CN.add(one(), zero()) == one()
+    sum = CN.add(one(), zero())
+    assert CN.decode(sum) == 1
   end
 
   property "adding 2 positives match" do
@@ -45,11 +48,13 @@ defmodule ChurchNumeralsTest do
   ### MULTIPLY
 
   test "mult(one, zero)" do
-    assert CN.mult(one(), zero()) == zero()
+    product = CN.mult(one(), zero())
+    assert CN.decode(product) == 0
   end
 
   test "mult(zero, one)" do
-    assert CN.mult(zero(), one()) == zero()
+    product = CN.mult(zero(), one())
+    assert CN.decode(product) == 0
   end
 
   test "mult(two, three)" do
@@ -77,11 +82,13 @@ defmodule ChurchNumeralsTest do
   end
 
   test "exp(zero, one)" do
-    assert CN.exp(zero(), one()) == zero()
+    powered = CN.exp(zero(), one())
+    assert CN.decode(powered) == 0
   end
 
   test "exp(one, one)" do
-    assert CN.exp(one(), one()) == one()
+    powered = CN.exp(one(), one())
+    assert CN.decode(powered) == 1
   end
 
   test "exp(one, two)" do
