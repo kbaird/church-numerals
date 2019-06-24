@@ -57,12 +57,6 @@ defmodule ChurchNumeralsTest do
     assert CN.decode(product) == 0
   end
 
-  test "mult(two, three)" do
-    two = CN.encode(2)
-    three = CN.encode(3)
-    assert CN.decode(CN.mult(two, three)) == 6
-  end
-
   property "multing 2 positives match" do
     check all int1 <- positive_integer(),
               int2 <- positive_integer() do
