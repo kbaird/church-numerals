@@ -42,10 +42,10 @@ defmodule ChurchNumerals do
   """
   def decode(fun) when is_function(fun), do: decode(fun, 0)
 
-  defp decode(fun, num) when is_zero_church(fun), do: num
+  defp decode(fun, acc) when is_zero_church(fun), do: acc
 
-  defp decode(fun, num) when is_pos_church(fun) do
-    decode(fun.(), num + 1)
+  defp decode(fun, acc) when is_pos_church(fun) do
+    decode(fun.(), acc + 1)
   end
 
   @doc """
