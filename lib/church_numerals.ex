@@ -23,6 +23,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.encode(0).(:identity_fun)
       :identity_fun
   """
+  @spec encode(integer()) :: function()
   def encode(0), do: fn arg -> arg end
 
   def encode(num) when is_pos_raw_int(num) do
@@ -40,6 +41,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(five)
       5
   """
+  @spec decode(function()) :: integer()
   def decode(fun) when is_function(fun), do: decode(fun, 0)
 
   defp decode(fun, acc) when is_zero_church(fun), do: acc
@@ -68,6 +70,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(three)
       3
   """
+  @spec add(function(), function()) :: function()
   def add(zero, fun) when is_zero_church(zero), do: fun
   def add(fun, zero) when is_zero_church(zero), do: fun
 
@@ -89,6 +92,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(six)
       6
   """
+  @spec mult(function(), function()) :: function()
   def mult(_, zero) when is_zero_church(zero), do: zero
   def mult(zero, _) when is_zero_church(zero), do: zero
 
@@ -117,6 +121,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(nine)
       9
   """
+  @spec exp(function(), function()) :: function()
   def exp(_, zero) when is_zero_church(zero), do: encode(1)
   def exp(zero, _) when is_zero_church(zero), do: zero
 
@@ -138,6 +143,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(zero)
       0
   """
+  @spec prev(function()) :: function()
   def prev(num) when is_function(num), do: num.()
 
   @doc """
@@ -150,6 +156,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(three)
       3
   """
+  @spec succ(function()) :: function()
   def succ(num) when is_function(num), do: fn -> num end
 
   ### PRIVATE FUNCTIONS ###
