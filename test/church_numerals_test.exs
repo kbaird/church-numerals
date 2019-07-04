@@ -33,7 +33,7 @@ defmodule ChurchNumeralsTest do
 
   property "multing 2 non-negative integers matches" do
     quickcheck(
-      forall [int1, int2] <- [pos_integer(), pos_integer()] do
+      forall [int1, int2] <- [non_neg_integer(), non_neg_integer()] do
         cn1 = CN.encode(int1)
         cn2 = CN.encode(int2)
         encoded = CN.mult(cn1, cn2)
@@ -71,11 +71,11 @@ defmodule ChurchNumeralsTest do
     )
   end
 
-  property "any pos int to the zeroth power is 1" do
+  property "any non-negative integer to the zeroth power is 1" do
     zero = CN.encode(0)
 
     quickcheck(
-      forall int <- pos_integer() do
+      forall int <- non_neg_integer() do
         base = CN.encode(int)
         encoded = CN.exp(base, zero)
         decoded = CN.decode(encoded)
