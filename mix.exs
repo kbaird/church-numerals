@@ -3,6 +3,17 @@ defmodule ChurchNumerals.MixProject do
 
   def project do
     [
+      dialyzer: [
+        plt_add_deps: :transitive,
+        plt_add_apps: [:mix, :ex_unit],
+        flags: [
+          :unmatched_returns,
+          :error_handling,
+          :race_conditions,
+          :no_opaque
+        ],
+        ignore_warnings: "dialyzer.ignore-warnings"
+      ],
       app: :church_numerals,
       version: "0.1.0",
       elixir: "~> 1.7",
@@ -21,8 +32,8 @@ defmodule ChurchNumerals.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false},
-      {:propcheck, "~> 1.1", only: [:test, :dev]}
+      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev, :test], runtime: false},
+      {:propcheck, "~> 1.1", only: [:dev, :test]}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
     ]
