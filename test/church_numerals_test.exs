@@ -19,7 +19,7 @@ defmodule ChurchNumeralsTest do
 
   property "adding 2 non-negative integers matches" do
     quickcheck(
-      forall [int1, int2] <- [non_neg_integer(), non_neg_integer()] do
+      forall {int1, int2} <- {non_neg_integer(), non_neg_integer()} do
         cn1 = CN.encode(int1)
         cn2 = CN.encode(int2)
         encoded = CN.add(cn1, cn2)
@@ -33,7 +33,7 @@ defmodule ChurchNumeralsTest do
 
   property "multing 2 non-negative integers matches" do
     quickcheck(
-      forall [int1, int2] <- [non_neg_integer(), non_neg_integer()] do
+      forall {int1, int2} <- {non_neg_integer(), non_neg_integer()} do
         cn1 = CN.encode(int1)
         cn2 = CN.encode(int2)
         encoded = CN.mult(cn1, cn2)
@@ -87,7 +87,7 @@ defmodule ChurchNumeralsTest do
   property "exponentiating small non-negative integers matches" do
     quickcheck(
       # using a smaller range to not lock up my machine
-      forall [int1, int2] <- [range(0, 5), range(0, 5)] do
+      forall {int1, int2} <- {range(0, 5), range(0, 5)} do
         cn1 = CN.encode(int1)
         cn2 = CN.encode(int2)
         encoded = CN.exp(cn1, cn2)
