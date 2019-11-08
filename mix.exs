@@ -12,7 +12,8 @@ defmodule ChurchNumerals.MixProject do
           :race_conditions,
           :no_opaque
         ],
-        ignore_warnings: "dialyzer.ignore-warnings"
+        ignore_warnings: ".dialyzer_ignore.exs",
+        list_unused_filters: true
       ],
       app: :church_numerals,
       version: "0.1.0",
@@ -32,7 +33,7 @@ defmodule ChurchNumerals.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev, :test], runtime: false},
       {:propcheck, "~> 1.1", only: [:dev, :test]}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},

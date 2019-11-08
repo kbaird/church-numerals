@@ -1,8 +1,11 @@
 defmodule ChurchNumeralsTest do
   use ExUnit.Case
+
   # https://hexdocs.pm/propcheck/readme.html
   use PropCheck
+
   doctest ChurchNumerals
+
   alias ChurchNumerals, as: CN
 
   ### ENCODE & DECODE
