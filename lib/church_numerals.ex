@@ -13,9 +13,9 @@ defmodule ChurchNumerals do
       value inside a 0-arity fun
   """
 
-  defguard is_pos_raw_int(num) when is_integer(num) and num > 0
-  defguard is_pos_church(encoded) when is_function(encoded, 0)
-  defguard is_zero_church(encoded) when is_function(encoded, 1)
+  defguardp is_pos_raw_int(num) when is_integer(num) and num > 0
+  defguardp is_pos_church(encoded) when is_function(encoded, 0)
+  defguardp is_zero_church(encoded) when is_function(encoded, 1)
 
   @doc """
   ## Examples
