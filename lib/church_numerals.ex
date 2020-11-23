@@ -13,9 +13,9 @@ defmodule ChurchNumerals do
       value inside a 0-arity fun
   """
 
-  defguard is_pos_raw_int(num) when is_integer(num) and num > 0
-  defguard is_pos_church(encoded) when is_function(encoded, 0)
-  defguard is_zero_church(encoded) when is_function(encoded, 1)
+  defguardp is_pos_raw_int(num) when is_integer(num) and num > 0
+  defguardp is_pos_church(encoded) when is_function(encoded, 0)
+  defguardp is_zero_church(encoded) when is_function(encoded, 1)
 
   @doc """
   ## Examples
@@ -54,14 +54,14 @@ defmodule ChurchNumerals do
   ## Examples
 
       iex> zero = ChurchNumerals.encode(0)
-      iex> zero = ChurchNumerals.add(zero, zero)
-      iex> ChurchNumerals.decode(zero)
+      iex> still_zero = ChurchNumerals.add(zero, zero)
+      iex> ChurchNumerals.decode(still_zero)
       0
 
       iex> zero = ChurchNumerals.encode(0)
       iex> five = ChurchNumerals.encode(5)
-      iex> five = ChurchNumerals.add(zero, five)
-      iex> ChurchNumerals.decode(five)
+      iex> still_five = ChurchNumerals.add(zero, five)
+      iex> ChurchNumerals.decode(still_five)
       5
 
       iex> one = ChurchNumerals.encode(1)
@@ -85,6 +85,18 @@ defmodule ChurchNumerals do
 
   @doc """
   ## Examples
+
+      iex> zero = ChurchNumerals.encode(0)
+      iex> one = ChurchNumerals.encode(1)
+      iex> still_zero = ChurchNumerals.mult(zero, one)
+      iex> ChurchNumerals.decode(still_zero)
+      0
+
+      iex> zero = ChurchNumerals.encode(0)
+      iex> one = ChurchNumerals.encode(1)
+      iex> still_zero = ChurchNumerals.mult(one, zero)
+      iex> ChurchNumerals.decode(still_zero)
+      0
 
       iex> two = ChurchNumerals.encode(2)
       iex> three = ChurchNumerals.succ(two)
