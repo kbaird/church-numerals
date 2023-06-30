@@ -10,7 +10,7 @@ defmodule ChurchNumerals do
       (i.e., it returns zero additional wrappings within a fun)
 
     Higher integers wrap their argument as many times as their
-      value inside a 0-arity fun
+    value inside a 0-arity fun
   """
 
   defguardp is_pos_raw_int(num) when is_integer(num) and num > 0
