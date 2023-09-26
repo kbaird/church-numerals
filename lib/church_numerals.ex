@@ -113,8 +113,7 @@ defmodule ChurchNumerals do
     case {one_church?(fun1), one_church?(fun2)} do
       {true, _} -> fun2
       {_, true} -> fun1
-      # Note: unwrapping fun2 once here eases use of guards for recurse/4
-      {_, _} -> recurse(fun1, fun1, fun2.(), &add/2)
+      {_, _} -> recurse(fun1, fun1, fun2, &add/2)
     end
   end
 
@@ -142,8 +141,7 @@ defmodule ChurchNumerals do
     case {one_church?(fun1), one_church?(fun2)} do
       {true, _} -> fun1
       {_, true} -> fun1
-      # Note: unwrapping fun2 once here eases use of guards for recurse/4
-      {_, _} -> recurse(fun1, fun1, fun2.(), &mult/2)
+      {_, _} -> recurse(fun1, fun1, fun2, &mult/2)
     end
   end
 
@@ -177,16 +175,14 @@ defmodule ChurchNumerals do
     is_zero_church(fun.())
   end
 
-  defp recurse(result, _operand, steps_remaining, _operation)
-       # Note: unwrapping steps_remaining earlier allows use of is_zero_church here
-       when is_pos_church(result) and is_zero_church(steps_remaining) do
-    result
-  end
-
   defp recurse(acc, operand, steps_remaining, operation)
        when is_pos_church(acc) and is_pos_church(operand) and
               is_pos_church(steps_remaining) and is_function(operation) do
-    acc = operation.(acc, operand)
-    recurse(acc, operand, steps_remaining.(), operation)
+    if one_church?(steps_remaining) do
+      acc
+    else
+      acc = operation.(acc, operand)
+      recurse(acc, operand, steps_remaining.(), operation)
+    end
   end
 end
