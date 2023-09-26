@@ -177,7 +177,7 @@ defmodule ChurchNumerals do
 
   defp recurse(acc, operand, steps_remaining, operation)
        when is_pos_church(acc) and is_pos_church(operand) and
-              is_pos_church(steps_remaining) and is_function(operation) do
+              is_pos_church(steps_remaining) and is_function(operation, 2) do
     if one_church?(steps_remaining) do
       acc
     else
