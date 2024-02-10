@@ -42,12 +42,12 @@ defmodule ChurchNumerals do
       5
   """
   @spec decode(function()) :: integer()
-  def decode(fun) when is_function(fun), do: decode(fun, 0)
+  def decode(church_num) when is_function(church_num), do: decode(church_num, 0)
 
-  defp decode(fun, acc) when is_zero_church(fun), do: acc
+  defp decode(church_num, acc) when is_zero_church(church_num), do: acc
 
-  defp decode(fun, acc) when is_pos_church(fun) do
-    decode(fun.(), acc + 1)
+  defp decode(church_num, acc) when is_pos_church(church_num) do
+    decode(church_num.(), acc + 1)
   end
 
   @doc """
@@ -71,16 +71,16 @@ defmodule ChurchNumerals do
       3
   """
   @spec add(function(), function()) :: function()
-  def add(zero, fun) when is_zero_church(zero), do: fun
-  def add(fun, zero) when is_zero_church(zero), do: fun
+  def add(zero, church_num) when is_zero_church(zero), do: church_num
+  def add(church_num, zero) when is_zero_church(zero), do: church_num
 
-  def add(fun1, fun2)
-      when is_pos_church(fun1) and is_pos_church(fun2) do
-    add(succ(fun1), prev(fun2))
+  def add(augend, addend)
+      when is_pos_church(augend) and is_pos_church(addend) do
+    add(succ(augend), prev(addend))
     # alternately
-    # additional_turns = decode(fun2)
+    # additional_turns = decode(church_num2)
     # wrap_accumulator = fn _, acc -> fn -> acc end end
-    # Enum.reduce(1..additional_turns, fun1, wrap_accumulator)
+    # Enum.reduce(1..additional_turns, church_num1, wrap_accumulator)
   end
 
   @doc """
@@ -108,12 +108,12 @@ defmodule ChurchNumerals do
   def mult(_, zero) when is_zero_church(zero), do: zero
   def mult(zero, _) when is_zero_church(zero), do: zero
 
-  def mult(fun1, fun2)
-      when is_pos_church(fun1) and is_pos_church(fun2) do
-    case {one_church?(fun1), one_church?(fun2)} do
-      {true, _} -> fun2
-      {_, true} -> fun1
-      {_, _} -> recurse(fun1, fun1, fun2, &add/2)
+  def mult(multiplier, multiplicand)
+      when is_pos_church(multiplier) and is_pos_church(multiplicand) do
+    case {one_church?(multiplier), one_church?(multiplicand)} do
+      {true, _} -> multiplicand
+      {_, true} -> multiplier
+      {_, _} -> recurse(multiplier, multiplier, multiplicand, &add/2)
     end
   end
 
@@ -133,15 +133,15 @@ defmodule ChurchNumerals do
       9
   """
   @spec exp(function(), function()) :: function()
-  def exp(_, zero) when is_zero_church(zero), do: encode(1)
-  def exp(zero, _) when is_zero_church(zero), do: zero
+  def exp(_, exponent) when is_zero_church(exponent), do: encode(1)
+  def exp(base, _) when is_zero_church(base), do: base
 
-  def exp(fun1, fun2)
-      when is_pos_church(fun1) and is_pos_church(fun2) do
-    case {one_church?(fun1), one_church?(fun2)} do
-      {true, _} -> fun1
-      {_, true} -> fun1
-      {_, _} -> recurse(fun1, fun1, fun2, &mult/2)
+  def exp(base, exponent)
+      when is_pos_church(base) and is_pos_church(exponent) do
+    case {one_church?(base), one_church?(exponent)} do
+      {true, _} -> base
+      {_, true} -> base
+      {_, _} -> recurse(base, base, exponent, &mult/2)
     end
   end
 
@@ -171,8 +171,8 @@ defmodule ChurchNumerals do
 
   ### PRIVATE FUNCTIONS ###
 
-  defp one_church?(fun) when is_pos_church(fun) do
-    is_zero_church(fun.())
+  defp one_church?(church_num) when is_pos_church(church_num) do
+    is_zero_church(church_num.())
   end
 
   defp recurse(acc, operand, steps_remaining, operation)
