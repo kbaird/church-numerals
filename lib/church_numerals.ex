@@ -113,7 +113,7 @@ defmodule ChurchNumerals do
     case {one_church?(multiplier), one_church?(multiplicand)} do
       {true, _} -> multiplicand
       {_, true} -> multiplier
-      {_, _} -> recurse(multiplier, multiplier, multiplicand, &add/2)
+      {_, _} -> recurse(multiplier, multiplier, multiplicand.(), &add/2)
     end
   end
 
@@ -141,7 +141,7 @@ defmodule ChurchNumerals do
     case {one_church?(base), one_church?(exponent)} do
       {true, _} -> base
       {_, true} -> base
-      {_, _} -> recurse(base, base, exponent, &mult/2)
+      {_, _} -> recurse(base, base, exponent.(), &mult/2)
     end
   end
 
@@ -175,14 +175,15 @@ defmodule ChurchNumerals do
     is_zero_church(church_num.())
   end
 
+  defp recurse(acc, _operand, steps_remaining, _operation)
+       when is_pos_church(acc) and is_zero_church(steps_remaining) do
+    acc
+  end
+
   defp recurse(acc, operand, steps_remaining, operation)
        when is_pos_church(acc) and is_pos_church(operand) and
               is_pos_church(steps_remaining) and is_function(operation, 2) do
-    if one_church?(steps_remaining) do
-      acc
-    else
-      acc = operation.(acc, operand)
-      recurse(acc, operand, steps_remaining.(), operation)
-    end
+    acc = operation.(acc, operand)
+    recurse(acc, operand, steps_remaining.(), operation)
   end
 end
