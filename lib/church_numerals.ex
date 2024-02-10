@@ -16,6 +16,7 @@ defmodule ChurchNumerals do
   defguardp is_pos_raw_int(num) when is_integer(num) and num > 0
   defguardp is_pos_church(encoded) when is_function(encoded, 0)
   defguardp is_zero_church(encoded) when is_function(encoded, 1)
+  defguardp is_operation(op) when is_function(op, 2)
 
   @doc """
   ## Examples
@@ -113,7 +114,8 @@ defmodule ChurchNumerals do
     case {one_church?(multiplier), one_church?(multiplicand)} do
       {true, _} -> multiplicand
       {_, true} -> multiplier
-      {_, _} -> recurse(multiplier, multiplier, multiplicand.(), &add/2)
+      # recurse with 1 step already started
+      {_, _} -> recurse(multiplier, multiplicand.(), &add/2, multiplier)
     end
   end
 
@@ -141,7 +143,8 @@ defmodule ChurchNumerals do
     case {one_church?(base), one_church?(exponent)} do
       {true, _} -> base
       {_, true} -> base
-      {_, _} -> recurse(base, base, exponent.(), &mult/2)
+      # recurse with 1 step already started
+      {_, _} -> recurse(base, exponent.(), &mult/2, base)
     end
   end
 
@@ -175,15 +178,15 @@ defmodule ChurchNumerals do
     is_zero_church(church_num.())
   end
 
-  defp recurse(acc, _operand, steps_remaining, _operation)
-       when is_pos_church(acc) and is_zero_church(steps_remaining) do
+  defp recurse(_operand, additional_steps, _operation, acc)
+       when is_zero_church(additional_steps) and is_pos_church(acc) do
     acc
   end
 
-  defp recurse(acc, operand, steps_remaining, operation)
-       when is_pos_church(acc) and is_pos_church(operand) and
-              is_pos_church(steps_remaining) and is_function(operation, 2) do
-    acc = operation.(acc, operand)
-    recurse(acc, operand, steps_remaining.(), operation)
+  defp recurse(operand, additional_steps, operation, acc)
+       when is_pos_church(operand) and is_pos_church(additional_steps) and
+              is_operation(operation) and is_pos_church(acc) do
+    new_acc = operation.(acc, operand)
+    recurse(operand, additional_steps.(), operation, new_acc)
   end
 end
