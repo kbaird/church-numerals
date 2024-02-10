@@ -24,7 +24,7 @@ defmodule ChurchNumerals do
       :identity_fun
   """
   @spec encode(integer()) :: function()
-  def encode(0), do: fn arg -> arg end
+  def encode(0), do: fn arg when not is_function(arg) -> arg end
 
   def encode(num) when is_pos_raw_int(num) do
     fn -> encode(num - 1) end
