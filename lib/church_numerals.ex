@@ -18,13 +18,17 @@ defmodule ChurchNumerals do
   defguardp is_zero_church(encoded) when is_function(encoded, 1)
   defguardp is_operation(op) when is_function(op, 2)
 
+  @typep church_zero :: (any() -> fun())
+  @typep church_pos :: (-> any())
+  @typep church_num :: church_zero() | church_pos()
+
   @doc """
   ## Examples
 
       iex> ChurchNumerals.encode(0).(:identity_fun)
       :identity_fun
   """
-  @spec encode(integer()) :: function()
+  @spec encode(integer()) :: church_num()
   def encode(0), do: fn arg when not is_function(arg) -> arg end
 
   def encode(num) when is_pos_raw_int(num) do
@@ -42,7 +46,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(five)
       5
   """
-  @spec decode(function()) :: integer()
+  @spec decode(church_num()) :: integer()
   def decode(church_num) when is_function(church_num), do: decode(church_num, 0)
 
   defp decode(church_num, acc) when is_zero_church(church_num), do: acc
@@ -71,7 +75,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(three)
       3
   """
-  @spec add(function(), function()) :: function()
+  @spec add(church_num(), church_num()) :: church_num()
   def add(zero, church_num) when is_zero_church(zero), do: church_num
   def add(church_num, zero) when is_zero_church(zero), do: church_num
 
@@ -105,7 +109,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(six)
       6
   """
-  @spec mult(function(), function()) :: function()
+  @spec mult(church_num(), church_num()) :: church_num()
   def mult(_, zero) when is_zero_church(zero), do: zero
   def mult(zero, _) when is_zero_church(zero), do: zero
 
@@ -134,7 +138,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(nine)
       9
   """
-  @spec exp(function(), function()) :: function()
+  @spec exp(church_num(), church_num()) :: church_num()
   def exp(_, exponent) when is_zero_church(exponent), do: encode(1)
   def exp(base, _) when is_zero_church(base), do: base
 
@@ -156,7 +160,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(zero)
       0
   """
-  @spec prev(function()) :: function()
+  @spec prev(church_num()) :: church_num()
   def prev(num) when is_function(num), do: num.()
 
   @doc """
@@ -169,7 +173,7 @@ defmodule ChurchNumerals do
       iex> ChurchNumerals.decode(three)
       3
   """
-  @spec succ(function()) :: function()
+  @spec succ(church_num()) :: church_num()
   def succ(num) when is_function(num), do: fn -> num end
 
   ### PRIVATE FUNCTIONS ###
