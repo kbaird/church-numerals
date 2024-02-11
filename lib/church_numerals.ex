@@ -18,8 +18,8 @@ defmodule ChurchNumerals do
   defguardp is_zero_church(encoded) when is_function(encoded, 1)
   defguardp is_operation(op) when is_function(op, 2)
 
-  @typep church_zero :: (any() -> fun())
-  @typep church_pos :: (-> any())
+  @typep church_zero :: (any() -> any())
+  @typep church_pos :: (-> function())
   @typep church_num :: church_zero() | church_pos()
 
   @doc """
