@@ -13,14 +13,14 @@ defmodule ChurchNumerals do
     value inside a 0-arity fun
   """
 
+  @opaque church_zero :: (any() -> any())
+  @opaque church_pos :: (-> function())
+  @opaque church_num :: church_zero() | church_pos()
+
   defguardp is_pos_raw_int(num) when is_integer(num) and num > 0
   defguardp is_pos_church(encoded) when is_function(encoded, 0)
   defguardp is_zero_church(encoded) when is_function(encoded, 1)
   defguardp is_operation(op) when is_function(op, 2)
-
-  @typep church_zero :: (any() -> any())
-  @typep church_pos :: (-> function())
-  @typep church_num :: church_zero() | church_pos()
 
   @doc """
   ## Examples
