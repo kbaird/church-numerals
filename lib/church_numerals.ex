@@ -81,11 +81,10 @@ defmodule ChurchNumerals do
 
   def add(augend, addend)
       when is_pos_church(augend) and is_pos_church(addend) do
-    add(succ(augend), prev(addend))
+    additional_turns = decode(addend)
+    Enum.reduce(1..additional_turns, augend, fn _, acc -> succ(acc) end)
     # alternately
-    # additional_turns = decode(church_num2)
-    # wrap_accumulator = fn _, acc -> fn -> acc end end
-    # Enum.reduce(1..additional_turns, church_num1, wrap_accumulator)
+    # add(succ(augend), prev(addend))
   end
 
   @doc """
