@@ -6,51 +6,117 @@ on:
     branches:
       - main
 
+env:
+  MIX_ENV: test
+
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
-    env:
-      MIX_ENV: test
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - pair:
-              elixir: "1.20"
-              otp: "29"
-            lint: lint
     steps:
       - uses: actions/checkout@v4
 
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{matrix.pair.otp}}
-          elixir-version: ${{matrix.pair.elixir}}
+          otp-version: "29"
+          elixir-version: "1.20"
 
       - uses: actions/cache@v4
         with:
           path: |
             deps
             _build
-          key: ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-${{ hashFiles('**/mix.lock') }}
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: |
-            ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-
+            ${{ runner.os }}-mix-
 
       - run: mix deps.get --only test
 
-      - run: mix format --check-formatted
-        if: ${{ matrix.lint }}
+      - run: mix deps.compile
 
-      - run: mix deps.get && mix deps.unlock --check-unused
-        if: ${{ matrix.lint }}
+      - run: mix format --check-formatted
+
+      - run: mix deps.unlock --check-unused
+
+      - run: mix compile --warnings-as-errors
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: "29"
+          elixir-version: "1.20"
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - run: mix deps.get --only test
 
       - run: mix deps.compile
 
-      - run: mix compile --warnings-as-errors
-        if: ${{ matrix.lint }}
-
       - run: mix test
 
-      - run: mix dialyzer
+  credo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: "29"
+          elixir-version: "1.20"
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - run: mix deps.get --only test
+
+      - run: mix deps.compile
 
       - run: mix credo --strict
+
+  dialyzer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: "29"
+          elixir-version: "1.20"
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.mix
+          key: ${{ runner.os }}-dialyzer-plt-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-dialyzer-plt-
+
+      - run: mix deps.get --only test
+
+      - run: mix deps.compile
+
+      - run: mix dialyzer
